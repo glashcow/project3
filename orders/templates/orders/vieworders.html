@@ -1,0 +1,11 @@
+{% extends "orders/layout.html" %}
+
+{% block title %} Active Orders {% endblock %}
+
+{% block body %}
+<ul>
+{% for order in orders %}
+    <li><a href="/{{order.id}}">{{order}}</a></li>
+{% endfor %}
+</ul>    
+{% endblock %}

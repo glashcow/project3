@@ -1,0 +1,20 @@
+{% extends "orders/layout.html" %}
+
+{% block title %} Special Pizza {% endblock %}
+
+{% block body %}
+<form action="{% url 'specialpizzorderin' %}" method="post">
+    {% csrf_token %}    
+    <select name="pizzatype">
+        {% for type in pizzas %}
+        <option value="{{type}}">{{type}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <input type="radio" id="small" name="size" value="small" checked="checked">
+    <label for="small">small</label><br>
+    <input type="radio" id="large" name="size" value="large">
+    <label for="large">large</label><br>
+    <input type="submit" value="Add to order">
+</form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "orders/layout.html" %}
+
+{% block title %} Your orders {% endblock %}
+
+
+
+{% block body %}
+<ul>
+{% for order in orders %}
+    <li>{{order}}  -{% if order.delivered %}DELIVERED {% else %}NOT DELIVERED{% endif %}</li>
+    <ul>
+        {% for pizza in pizzas %}
+        {% if pizza.order == order %}
+        <li>{{pizza}}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <br>
+{% endfor %}
+</ul>
+{% endblock %}

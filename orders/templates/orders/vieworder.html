@@ -1,0 +1,16 @@
+{% extends "orders/layout.html" %}
+
+{% block title %} Active Orders {% endblock %}
+
+{% block body %}
+<ul>
+{% for pizza in pizzas %}
+    <li>{{pizza}}</li>
+{% endfor %}
+</ul>    
+<form action="{% url 'orderdelivered' %}" method="post">
+    {% csrf_token %}  
+    <input type="radio" name="order_id" value="{{id}}" checked="checked">
+    <input type="submit" value="Delivered">
+</form>
+{% endblock %}

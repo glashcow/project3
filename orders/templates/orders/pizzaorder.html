@@ -1,0 +1,31 @@
+{% extends "orders/layout.html" %}
+
+{% block title %} Regular Pizza {% endblock %}
+
+{% block body %}
+
+{% for message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+
+<form action="{% url 'pizzorderin' %}" method="post">
+    {% csrf_token %}    
+    <select name="pizzatype">
+        {% for type in pizzas %}
+        <option value="{{type}}">{{type}}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <input type="radio" id="small" name="size" value="small" checked="checked">
+    <label for="small">small</label><br>
+    <input type="radio" id="large" name="size" value="large">
+    <label for="large">large</label><br>
+    <h4>Choose up to 3 Toppings</h4>
+    <select name="toppings" multiple size="6">
+        {% for top in toppings %}
+        <option value="{{top}}">{{top}}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Add to order">
+</form>
+{% endblock %}

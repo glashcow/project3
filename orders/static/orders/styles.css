@@ -1,0 +1,63 @@
+.header {
+    height: 100px;
+}
+
+.menuitems {
+    padding:10px;
+    margin:10px;
+    width:80%;
+}
+
+.baritems {
+    width: 33%;
+    padding: 20px;
+    text-align: center;
+}
+
+.pizzarows th {
+    width: 33%;
+}
+
+.pizzarows td {
+    width: 33%;
+}
+
+.whilesignedin {
+    display: none;
+}
+
+#user {
+    display:none;
+}
+
+.menuhead {
+    text-align: center;
+}
+
+.toppings {
+     text-align: center;   
+}
+
+#abfree {
+    font-size: 30px;
+    text-decoration: underline; 
+}
+
+@keyframes shrink {
+    0% {
+        font-size: 20px;
+    }
+    50% {
+        font-size: 20px;
+    }
+    100%{
+        font-size: 0px;
+    }
+}
+
+#message{
+    text-align: center;
+    animation-name: shrink;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+}

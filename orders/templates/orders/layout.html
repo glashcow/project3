@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'orders/styles.css' %}"/>
+        <script type="text/javascript" src="{% static 'orders/index.js' %}"></script>
+        <meta name="viewport" content="width=device_width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        {% block head %} {% endblock %}
+    </head>
+    <body>
+        <p id="user">{{user.username}}</p>
+        <div class="container">
+            <div class="row header">
+                <div class="col-3 baritems" >
+                    <a href="{% url 'menu' %}">Menu</a>
+                </div>
+                <div class="col-3 baritems">
+                   {% if username != "" %}
+                    <a href="{% url 'cart' %}">View Current Order/</a>
+                    <a href="{% url 'orders' %}">View Orders</a>
+                    {% for message in messages %}
+                     <p id="message">{{ message }}</p>
+                    {% endfor %}
+                    {% endif %} 
+                </div>
+                <div class="col-3 baritems">
+                    <a href="{% url 'about' %}">About Us</a>
+                </div>
+                <div class="col-3 baritems" >
+                    {% if username == "" %}
+                    <a href="/login">Login/</a>
+                    <a href="/register">Register</a>
+                    {% else %}
+                    <a href="/logout">Logout</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

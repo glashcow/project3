@@ -1,0 +1,60 @@
+{% extends "orders/layout.html" %}
+
+{% block title %} Menu {% endblock %}
+
+
+{% block body %}
+
+
+
+{% for pizza in pizzas %}
+    <table class="menuitems">
+    <h4 class="menuhead">{{pizza.pizzatype}} Pizzas</h4>
+    <tr class="pizzarows">
+        <th></th>
+        <th>Small</th>
+        <th>Large</th>
+    </tr>
+    <tr class="pizzarows">
+        <td>Cheese</td>
+        <td>{{pizza.sm_0t}}</td>
+        <td>{{pizza.la_0t}}</td>
+    </tr> 
+    <tr class="pizzarows">
+        <td>One Topping</td>
+        <td>{{pizza.sm_1t}}</td>
+        <td>{{pizza.la_1t}}</td>
+    </tr> 
+    <tr class="pizzarows">
+        <td>Two Toppings</td>
+        <td>{{pizza.sm_2t}}</td>
+        <td>{{pizza.la_2t}}</td>
+    </tr> 
+    <tr class="pizzarows">
+        <td>Three Toppings</td>
+        <td>{{pizza.sm_3t}}</td>
+        <td>{{pizza.la_3t}}</td>
+    </tr>
+    <tr class="Special">
+        <td>Special</td>
+        <td>{{pizza.sm_st}}</td>
+        <td>{{pizza.la_st}}</td>
+        </tr>
+    </table>
+{% endfor %}
+
+{% if username != "" %}
+<a href="{% url 'pizzaorder' %}">Add Pizza To Order</a><br>
+<a href="{% url 'specialpizzaorder' %}">Add Special Pizza To Order</a>
+{% endif %}
+
+<table class="menuitems">
+    <h4 class="menuhead toppings">Toppings</h4>
+    {% for topping in toppings %}
+    <tr>
+        <td>{{topping}}</td>
+    </tr>       
+    {% endfor %}
+</table>
+
+{% endblock %}

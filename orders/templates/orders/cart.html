@@ -1,0 +1,29 @@
+{% extends "orders/layout.html" %}
+
+{% block title %} View Cart {% endblock %}
+
+{% block body %}
+
+<table>
+    <tr>
+        <th>Item</th>
+    </tr>
+    {% for pizza in pizzas %}
+    <tr>
+        <td>{{pizza}}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <th>Total Price</th>
+    </tr>
+    <tr>
+        <td>{{price}}</td>
+    </tr>
+</table> 
+{% if price != 0 %}
+<form action="{% url 'placeorder' %}" method="post" id="placeorder">
+    {% csrf_token %}
+    <input type="submit" value="Place Order">
+</form>
+{% endif %}
+{% endblock %}
