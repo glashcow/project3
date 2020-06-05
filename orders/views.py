@@ -31,6 +31,9 @@ def menu(request):
 	context = {
 		"pizzas" : BasePizza.objects.all(),
 		"toppings" : Topping.objects.all(),
+		"pastas" : BasePasta.objects.all(),
+		"salads" : BaseSalad.objects.all(),
+		"platters" : BaseDinnerPlatters.objects.all(),
 		"user" : request.user,
 		"username" : request.user.username
 	}
@@ -99,11 +102,56 @@ def specialpizzorderin(request):
 	messages.success(request, "Added To Cart")
 	return HttpResponseRedirect(reverse("menu"))
 
+@login_required
+def addtocart(request):
+	if request.POST["type"] == "pasta":
+		pastastring = request.POST["pasta"]
+		p = BasePasta.objects.get(name = pastastring)
+		new_pasta = Pasta(base_pasta = p, ordered_by = request.user)
+		new_pasta.save()
+		pasta = Pasta.objects.filter(ordered_by=request.user).last()
+		pasta.get_price()
+		pasta.save()
+		messages.success(request, "Added To Cart")
+		return HttpResponseRedirect(reverse("menu"))
+
+	if request.POST["type"] == "salad":
+		saladstring = request.POST["salad"]
+		s = BaseSalad.objects.get(name = saladstring)
+		new_salad = Salad(base_salad = s, ordered_by = request.user)
+		new_salad.save()
+		salad = Salad.objects.filter(ordered_by=request.user).last()
+		salad.get_price()
+		salad.save()
+		messages.success(request, "Added To Cart")
+		return HttpResponseRedirect(reverse("menu"))	
+
+	if request.POST["type"] == "platter":
+		platterstring = request.POST["platter"]
+		print(request.POST["size"] )
+		if request.POST["size"] == "large":
+			large = True
+		else:
+			large = False	
+		p = BaseDinnerPlatters.objects.get(name = platterstring)
+		new_platter = DinnerPlatters(base_platter = p, ordered_by = request.user, large = large)
+		new_platter.save()
+		platter = DinnerPlatters.objects.filter(ordered_by=request.user).last()
+		platter.get_price()
+		platter.save()
+		messages.success(request, "Added To Cart")
+		return HttpResponseRedirect(reverse("menu"))	
 
 def cart_total_price(request):
 	total_price = 0
 	for pizza in Pizza.objects.filter(ordered_by=request.user).filter(sent_to_kitchen=False):
 		total_price += pizza.price
+	for pasta in Pasta.objects.filter(ordered_by=request.user).filter(sent_to_kitchen=False):
+		total_price += pasta.price	
+	for salad in Salad.objects.filter(ordered_by=request.user).filter(sent_to_kitchen=False):
+		total_price += salad.price	
+	for platter in DinnerPlatters.objects.filter(ordered_by=request.user).filter(sent_to_kitchen=False):
+		total_price += platter.price		
 	return total_price	
 
 
@@ -111,6 +159,9 @@ def cart_total_price(request):
 def cart(request):
 	context = {
 		"pizzas": Pizza.objects.filter(ordered_by=request.user).filter(sent_to_kitchen=False),
+		"pastas": Pasta.objects.filter(ordered_by=request.user).filter(sent_to_kitchen=False),
+		"salads": Salad.objects.filter(ordered_by=request.user).filter(sent_to_kitchen=False),
+		"platters": DinnerPlatters.objects.filter(ordered_by=request.user).filter(sent_to_kitchen=False),
 		"price" : cart_total_price(request)
 	}
 	return render(request, "orders/cart.html", context)
@@ -120,6 +171,9 @@ def orders(request):
 	context = {
 		"orders" : Order.objects.filter(user=request.user),
 		"pizzas": Pizza.objects.filter(sent_to_kitchen=True),
+		"pastas": Pasta.objects.filter(sent_to_kitchen=True), 
+		"platters": DinnerPlatters.objects.filter(sent_to_kitchen=True), 
+		"salads": Salad.objects.filter(sent_to_kitchen=True), 
 	}
 	return render(request, "orders/yourorders.html", context)
 
@@ -131,6 +185,18 @@ def placeorder(request):
 		pizza.order = new_order
 		pizza.sent_to_kitchen = True
 		pizza.save()
+	for pasta in Pasta.objects.filter(ordered_by=request.user).filter(sent_to_kitchen=False):
+		pasta.order = new_order
+		pasta.sent_to_kitchen = True
+		pasta.save()	
+	for salad in Salad.objects.filter(ordered_by=request.user).filter(sent_to_kitchen=False):
+		salad.order = new_order
+		salad.sent_to_kitchen = True
+		salad.save()
+	for platter in DinnerPlatters.objects.filter(ordered_by=request.user).filter(sent_to_kitchen=False):
+		platter.order = new_order
+		platter.sent_to_kitchen = True
+		platter.save()		
 	messages.success(request, "Food is on it's way")	
 	return HttpResponseRedirect(reverse("menu"))
 
@@ -145,6 +211,9 @@ def viewActiveOrders(request):
 def individualOrder(request, order_id):
 	context = {
 		"pizzas" : Pizza.objects.filter(order = Order.objects.get(id = order_id)),
+		"pastas" : Pasta.objects.filter(order = Order.objects.get(id = order_id)),
+		"salads" : Salad.objects.filter(order = Order.objects.get(id = order_id)),
+		"platters" : DinnerPlatters.objects.filter(order = Order.objects.get(id = order_id)),
 		"id" : order_id
 	}
 	return render(request, "orders/vieworder.html", context)

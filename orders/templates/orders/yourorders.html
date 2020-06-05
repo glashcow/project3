@@ -6,12 +6,33 @@
 
 {% block body %}
 <ul>
-{% for order in orders %}
+{% for order in orders reversed  %}
     <li>{{order}}  -{% if order.delivered %}DELIVERED {% else %}NOT DELIVERED{% endif %}</li>
     <ul>
         {% for pizza in pizzas %}
         {% if pizza.order == order %}
         <li>{{pizza}}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <ul>
+        {% for pasta in pastas %}
+        {% if pasta.order == order %}
+        <li>{{pasta}}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <ul>
+        {% for salad in salads %}
+        {% if salad.order == order %}
+        <li>{{salad}}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <ul>
+        {% for platter in platters %}
+        {% if platter.order == order %}
+        <li>{{platter}}</li>
         {% endif %}
         {% endfor %}
     </ul>

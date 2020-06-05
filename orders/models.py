@@ -10,7 +10,7 @@ class Order(models.Model):
 
     def __str__(self):
         if self.free:
-            return  f"Order {self.id} ordered at {self.time} costing NOTHING"
+            return  f"Order {self.id} ordered at {self.time} FREE"
         else:    
             return  f"Order {self.id} ordered at {self.time} costing ${self.price}"   
 
@@ -79,3 +79,70 @@ class Pizza(models.Model):
                 return f"Small {self.base_pizza.pizzatype} Special Pizza, at ${self.price}"              
 
 
+class BasePasta(models.Model):
+    name = models.CharField(max_length=64)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return f"{self.name} Pasta"
+
+class Pasta(models.Model):
+    base_pasta = models.ForeignKey(BasePasta, on_delete=models.CASCADE, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True, related_name="pastas")
+    ordered_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    sent_to_kitchen = models.BooleanField(default=False)
+    price = models.DecimalField(max_digits=4, decimal_places=2, default=0.00, editable=False)
+
+    def get_price(self):
+        self.price = self.base_pasta.price
+
+    def __str__(self):
+        return f"{self.base_pasta.name} at ${self.price}"    
+
+class BaseSalad(models.Model):
+    name = models.CharField(max_length=64)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return f"{self.name}"
+
+class Salad(models.Model):
+    base_salad = models.ForeignKey(BaseSalad, on_delete=models.CASCADE, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True, related_name="salads")
+    ordered_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    sent_to_kitchen = models.BooleanField(default=False)
+    price = models.DecimalField(max_digits=4, decimal_places=2, default=0.00, editable=False)
+
+    def get_price(self):
+        self.price = self.base_salad.price
+
+    def __str__(self):
+        return f"{self.base_salad.name} at ${self.price}"  
+
+class BaseDinnerPlatters(models.Model):
+    name = models.CharField(max_length=64)
+    small_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    large_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return f"{self.name} Platter"
+
+class DinnerPlatters(models.Model):
+    base_platter = models.ForeignKey(BaseDinnerPlatters, on_delete=models.CASCADE, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True, related_name="dinnerplatters")
+    ordered_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    sent_to_kitchen = models.BooleanField(default=False)
+    large = models.BooleanField(default=False)
+    price = models.DecimalField(max_digits=4, decimal_places=2, default=0.00, editable=False)
+
+    def get_price(self):
+        if self.large:
+            self.price = self.base_platter.large_price
+        else:
+            self.price = self.base_platter.small_price    
+
+    def __str__(self):
+        if self.large:
+            return f"Large {self.base_platter.name} Platter at ${self.price}"      
+        else:
+            return f"Small {self.base_platter.name} Platter at ${self.price}"          

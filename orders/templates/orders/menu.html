@@ -6,8 +6,11 @@
 {% block body %}
 
 
-
+<div class="boxed">
 {% for pizza in pizzas %}
+
+
+<div class="boxed">
     <table class="menuitems">
     <h4 class="menuhead">{{pizza.pizzatype}} Pizzas</h4>
     <tr class="pizzarows">
@@ -41,13 +44,16 @@
         <td>{{pizza.la_st}}</td>
         </tr>
     </table>
+    </div>
 {% endfor %}
 
 {% if username != "" %}
 <a href="{% url 'pizzaorder' %}">Add Pizza To Order</a><br>
 <a href="{% url 'specialpizzaorder' %}">Add Special Pizza To Order</a>
 {% endif %}
+</div> 
 
+<div class="boxed">
 <table class="menuitems">
     <h4 class="menuhead toppings">Toppings</h4>
     {% for topping in toppings %}
@@ -56,5 +62,78 @@
     </tr>       
     {% endfor %}
 </table>
+</div>
+
+<div class="boxed">
+<table class="menuitems">
+    <h4 class="menuhead pastas">Pasta</h4>
+    {% for pasta in pastas %}
+    <tr>
+        <td>{{pasta.name}}</td>
+        <td>{{pasta.price}} 
+            <form action="{% url 'addtocart' %}" method="post">
+                {% csrf_token %} 
+                <input type="radio" class="hide" name="type" value="pasta" checked="checked">
+                <input type="radio" class="hide" name="pasta" value="{{pasta.name}}" checked="checked">
+                <input type="submit" value="Add">
+            </form> 
+        </td>
+    </tr>       
+    {% endfor %}
+</table>
+
+</div>    
+<div class="boxed">    
+<table class="menuitems">
+    <h4 class="menuhead salads">Salad</h4>
+    {% for salad in salads %}
+    <tr>
+        <td>{{salad.name}}</td>
+        <td>{{salad.price}}
+            <form action="{% url 'addtocart' %}" method="post">
+                {% csrf_token %} 
+                <input type="radio" class="hide" name="type" value="salad" checked="checked">
+                <input type="radio" class="hide" name="salad" value="{{salad.name}}" checked="checked">
+                <input type="submit" value="Add">
+            </form> 
+        </td>
+    </tr>       
+    {% endfor %}
+</table>
+
+</div>    
+<div class="boxed">    
+<table class="menuitems">
+    <h4 class="menuhead platters">Dinner Platters</h4>
+    <tr>
+        <th></th>
+        <th>Small</th>
+        <th>Large</th>
+    </tr>
+    {% for platter in platters %}
+    <tr>
+        <td>{{platter.name}}</td>
+        <td>{{platter.small_price}}
+            <form action="{% url 'addtocart' %}" method="post">
+                {% csrf_token %} 
+                <input type="radio" class="hide" name="type" value="platter" checked="checked">
+                <input type="radio" class="hide" name="platter" value="{{platter.name}}" checked="checked">
+                <input type="radio" class="hide" name="size" value="small" checked="checked">
+                <input type="submit" value="Add">
+            </form> 
+        </td>
+        <td>{{platter.large_price}}
+            <form action="{% url 'addtocart' %}" method="post">
+                {% csrf_token %} 
+                <input type="radio" class="hide" name="type" value="platter" checked="checked">
+                <input type="radio" class="hide" name="platter" value="{{platter.name}}" checked="checked">
+                <input type="radio" class="hide" name="size" value="large" checked="checked">
+                <input type="submit" value="Add">
+            </form> 
+        </td>
+    </tr>       
+    {% endfor %}
+</table>
+</div>
 
 {% endblock %}

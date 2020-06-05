@@ -4,9 +4,18 @@
 
 {% block body %}
 <ul>
-{% for pizza in pizzas %}
+    {% for pizza in pizzas %}
     <li>{{pizza}}</li>
-{% endfor %}
+    {% endfor %}
+    {% for pasta in pastas %}
+    <li>{{pasta}}</li>
+    {% endfor %}
+    {% for salad in salads %}
+    <li>{{salad}}</li>
+    {% endfor %}
+    {% for platter in platters %}
+    <li>{{platter}}</li>
+    {% endfor %}
 </ul>    
 <form action="{% url 'orderdelivered' %}" method="post">
     {% csrf_token %}  

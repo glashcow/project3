@@ -14,6 +14,7 @@ urlpatterns = [
     path("menu/", views.menu, name="menu"),
     path("cart/", views.cart, name="cart"),
     path("orders/", views.orders, name="orders"),
+    path("addtocart", views.addtocart, name="addtocart"),
     path("placeorder", views.placeorder, name="placeorder"),
     path("viewActiveOrders/", views.viewActiveOrders, name="viewActiveOrders"),
     path("<int:order_id>", views.individualOrder, name ="individualOrder"), 

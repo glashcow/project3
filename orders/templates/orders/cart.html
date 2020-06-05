@@ -8,16 +8,39 @@
     <tr>
         <th>Item</th>
     </tr>
+    
     {% for pizza in pizzas %}
     <tr>
         <td>{{pizza}}</td>
     </tr>
     {% endfor %}
+    
+    
+    {% for pasta in pastas %}
     <tr>
+        <td>{{pasta}}</td>
+    </tr>
+    {% endfor %}
+    
+    
+    {% for salad in salads %}
+    <tr>
+        <td>{{salad}}</td>
+    </tr>
+    {% endfor %}
+    
+    {% for platter in platters %}
+    <tr>
+        <td>{{platter}}</td>
+    </tr>
+    {% endfor %}
+    
+    
+    <tr>         
         <th>Total Price</th>
     </tr>
     <tr>
-        <td>{{price}}</td>
+        <td>${{price}}</td>
     </tr>
 </table> 
 {% if price != 0 %}
